@@ -43,7 +43,7 @@
 version: "3.8"
 services:
   tavily-proxy:
-    image: ghcr.io/xuncv/tavilyproxymanager:latest
+    image: ghcr.io/kore-01/tavily:latest
     container_name: tavily-proxy
     ports:
       - "8080:8080"
@@ -72,7 +72,7 @@ docker run -d \
   -p 8080:8080 \
   -v $(pwd)/data:/app/data \
   -e DATABASE_PATH=/app/data/proxy.db \
-  ghcr.io/xuncv/tavilyproxymanager:latest
+  ghcr.io/kore-01/tavily:latest
 ```
 
 ---

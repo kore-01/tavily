@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -61,11 +60,7 @@ func NewHandler(deps Dependencies) http.Handler {
 	})
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := parseBearerToken(r.Header.Get("Authorization"))
-		if !deps.MasterKey.Authenticate(token) {
-			http.Error(w, "unauthorized", http.StatusUnauthorized)
-			return
-		}
+		// MCP endpoint - no authentication required
 		base.ServeHTTP(w, r)
 	})
 }
@@ -536,16 +531,3 @@ var tavilyCrawlInputSchema = map[string]any{
 	},
 }
 
-func parseBearerToken(authHeader string) string {
-	if authHeader == "" {
-		return ""
-	}
-	parts := strings.SplitN(authHeader, " ", 2)
-	if len(parts) != 2 {
-		return ""
-	}
-	if !strings.EqualFold(parts[0], "Bearer") {
-		return ""
-	}
-	return strings.TrimSpace(parts[1])
-}
