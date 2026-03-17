@@ -89,7 +89,7 @@ The proxy uses a smart key selection algorithm:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `LISTEN_ADDR` | Server address | `:8080` |
+| `LISTEN_ADDR` | Server address | `:5050` |
 | `DATABASE_PATH` | SQLite path | `./server/data/app.db` |
 | `TAVILY_BASE_URL` | Upstream API | `https://api.tavily.com` |
 | `UPSTREAM_TIMEOUT` | Proxy timeout | `150s` |

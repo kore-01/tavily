@@ -2,12 +2,12 @@ version: "3.8"
 
 services:
   tavily-proxy:
-    image: ghcr.io/xuncv/tavilyproxymanager:latest
+    image: ghcr.io/kore-01/tavily:latest
     pull_policy: always
     ports:
-      - "8080:8080"
+      - "5050:5050"
     environment:
-      - LISTEN_ADDR=:8080
+      - LISTEN_ADDR=:5050
       - DATABASE_PATH=/app/data/proxy.db
       - TAVILY_BASE_URL=https://api.tavily.com
       - UPSTREAM_TIMEOUT=30s

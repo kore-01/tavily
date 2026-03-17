@@ -20,7 +20,7 @@ type Config struct {
 func FromEnv() Config {
 	listenAddr := getenv("LISTEN_ADDR", "")
 	if listenAddr == "" {
-		port := getenv("PORT", "8080")
+		port := getenv("PORT", "5050")
 		listenAddr = ":" + port
 	}
 

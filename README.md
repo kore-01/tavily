@@ -46,9 +46,9 @@ services:
     image: ghcr.io/kore-01/tavily:latest
     container_name: tavily-proxy
     ports:
-      - "8080:8080"
+      - "5050:5050"
     environment:
-      - LISTEN_ADDR=:8080
+      - LISTEN_ADDR=:5050
       - DATABASE_PATH=/app/data/proxy.db
       - TAVILY_BASE_URL=https://api.tavily.com
       - UPSTREAM_TIMEOUT=30s
@@ -69,7 +69,7 @@ docker-compose up -d
 ```bash
 docker run -d \
   --name tavily-proxy \
-  -p 8080:8080 \
+  -p 5050:5050 \
   -v $(pwd)/data:/app/data \
   -e DATABASE_PATH=/app/data/proxy.db \
   ghcr.io/kore-01/tavily:latest
@@ -144,7 +144,7 @@ docker buildx build \
 客户端调用方式与 Tavily 官方 API 完全一致，只需将 API 地址替换为代理地址，并使用 **Master Key**：
 
 ```bash
-curl -X POST "http://localhost:8080/search" \
+curl -X POST "http://localhost:5050/search" \
   -H "Authorization: Bearer <MASTER_KEY>" \
   -H "Content-Type: application/json" \
   -d '{"query": "最新 AI 技术趋势", "search_depth": "basic"}'
@@ -157,7 +157,7 @@ curl -X POST "http://localhost:8080/search" \
 
 ### MCP (Model Context Protocol)
 
-服务在 `http://localhost:8080/mcp` 提供 HTTP MCP 端点。
+服务在 `http://localhost:5050/mcp` 提供 HTTP MCP 端点。
 
 默认启用无状态模式（`MCP_STATELESS=true`），可避免客户端出现 `session not found`。
 如需有状态会话，请将 `MCP_STATELESS=false`，并确保上游反向代理正确透传 `Mcp-Session-Id` 且启用会话粘性（sticky）。
@@ -172,7 +172,7 @@ curl -X POST "http://localhost:8080/search" \
       "args": [
         "-y",
         "mcp-remote",
-        "http://localhost:8080/mcp",
+        "http://localhost:5050/mcp",
         "--header",
         "Authorization: Bearer 您的_MASTER_KEY"
       ]
@@ -187,7 +187,7 @@ curl -X POST "http://localhost:8080/search" \
 
 | 变量名             | 说明                 | 默认值                   |
 | :----------------- | :------------------- | :----------------------- |
-| `LISTEN_ADDR`      | 服务监听地址         | `:8080`                  |
+| `LISTEN_ADDR`      | 服务监听地址         | `:5050`                  |
 | `DATABASE_PATH`    | SQLite 数据库路径    | `/app/data/proxy.db`     |
 | `TAVILY_BASE_URL`  | 上游 Tavily API 地址 | `https://api.tavily.com` |
 | `UPSTREAM_TIMEOUT` | 上游请求超时时间     | `150s`                   |

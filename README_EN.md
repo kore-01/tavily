@@ -46,9 +46,9 @@ services:
     image: ghcr.io/kore-01/tavily:main
     container_name: tavily-proxy
     ports:
-      - "8080:8080"
+      - "5050:5050"
     environment:
-      - LISTEN_ADDR=:8080
+      - LISTEN_ADDR=:5050
       - DATABASE_PATH=/app/data/proxy.db
       - TAVILY_BASE_URL=https://api.tavily.com
       - UPSTREAM_TIMEOUT=30s
@@ -69,7 +69,7 @@ docker-compose up -d
 ```bash
 docker run -d \
   --name tavily-proxy \
-  -p 8080:8080 \
+  -p 5050:5050 \
   -v $(pwd)/data:/app/data \
   -e DATABASE_PATH=/app/data/proxy.db \
   ghcr.io/kore-01/tavily:main
@@ -144,7 +144,7 @@ docker buildx build \
 Call the proxy exactly as you would the official Tavily API, simply replacing the API base URL and using your **Master Key**:
 
 ```bash
-curl -X POST "http://localhost:8080/search" \
+curl -X POST "http://localhost:5050/search" \
   -H "Authorization: Bearer <MASTER_KEY>" \
   -H "Content-Type: application/json" \
   -d '{"query": "Latest AI trends", "search_depth": "basic"}'
@@ -157,7 +157,7 @@ curl -X POST "http://localhost:8080/search" \
 
 ### MCP (Model Context Protocol)
 
-The server provides an HTTP MCP endpoint at `http://localhost:8080/mcp`.
+The server provides an HTTP MCP endpoint at `http://localhost:5050/mcp`.
 
 Stateless mode is enabled by default (`MCP_STATELESS=true`) to avoid `session not found` errors.
 If you need stateful sessions, set `MCP_STATELESS=false` and ensure your reverse proxy forwards `Mcp-Session-Id` and uses sticky sessions.
@@ -172,7 +172,7 @@ If you need stateful sessions, set `MCP_STATELESS=false` and ensure your reverse
       "args": [
         "-y",
         "mcp-remote",
-        "http://localhost:8080/mcp",
+        "http://localhost:5050/mcp",
         "--header",
         "Authorization: Bearer YOUR_MASTER_KEY"
       ]
@@ -187,7 +187,7 @@ If you need stateful sessions, set `MCP_STATELESS=false` and ensure your reverse
 
 | Variable           | Description              | Default                  |
 | :----------------- | :----------------------- | :----------------------- |
-| `LISTEN_ADDR`      | Server listening address | `:8080`                  |
+| `LISTEN_ADDR`      | Server listening address | `:5050`                  |
 | `DATABASE_PATH`    | Path to SQLite database  | `/app/data/proxy.db`     |
 | `TAVILY_BASE_URL`  | Upstream Tavily API URL  | `https://api.tavily.com` |
 | `UPSTREAM_TIMEOUT` | Upstream request timeout | `150s`                   |
