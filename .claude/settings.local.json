@@ -1,0 +1,15 @@
+{
+  "env": {
+    "ANTHROPIC_API_KEY": "sk-cp-UopoOVyZO_GbyPm-QVWoyE-1xOPavGi_ZoXUGfPrh0IfZMged6Er0X8h8eoc_-zTwcjZSP_PztisbNb2_A8wNDpSp0-b5ZoroBqpbe-3DM5fUDdZGfEqFxI",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-UopoOVyZO_GbyPm-QVWoyE-1xOPavGi_ZoXUGfPrh0IfZMged6Er0X8h8eoc_-zTwcjZSP_PztisbNb2_A8wNDpSp0-b5ZoroBqpbe-3DM5fUDdZGfEqFxI",
+    "ANTHROPIC_BASE_URL": "https://api.minimaxi.com/anthropic",
+    "DISABLE_AUTOUPDATER": 1,
+    "IS_SANDBOX": "1"
+  },
+  "permissions": {
+    "allow": [
+      "*"
+    ],
+    "defaultMode": "bypassPermissions"
+  }
+}
