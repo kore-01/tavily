@@ -33,7 +33,9 @@ func NewRouter(deps Dependencies) http.Handler {
 		Stateless:  deps.Config.MCPStateless,
 		SessionTTL: deps.Config.MCPSessionTTL,
 	})
-	r.Any("/mcp", gin.WrapH(mcpHandler))
+	// MCP endpoint - supports both HTTP (POST) and SSE (GET)
+	r.POST("/mcp", gin.WrapH(mcpHandler))
+	r.GET("/mcp", gin.WrapH(mcpHandler))
 
 	r.GET("/healthz", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"ok": true})
