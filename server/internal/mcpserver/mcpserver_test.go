@@ -167,7 +167,7 @@ func TestTavilyUsage_ReturnsErrorWhenStatsUnavailable(t *testing.T) {
 	}
 }
 
-func TestMCPHandler_RejectsUnauthorizedRequest(t *testing.T) {
+func TestMCPHandler_AllowsUnauthenticatedRequest(t *testing.T) {
 	t.Parallel()
 
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
@@ -194,12 +194,14 @@ func TestMCPHandler_RejectsUnauthorizedRequest(t *testing.T) {
 		SessionTTL: time.Minute,
 	})
 
+	// MCP endpoint now allows unauthenticated requests
 	req := httptest.NewRequest(http.MethodPost, "/mcp", nil)
 	w := httptest.NewRecorder()
 	handler.ServeHTTP(w, req)
 
-	if w.Code != http.StatusUnauthorized {
-		t.Fatalf("unexpected status: got %d want %d", w.Code, http.StatusUnauthorized)
+	// Should NOT return 401 - authentication is no longer required
+	if w.Code == http.StatusUnauthorized {
+		t.Fatalf("MCP endpoint should not require authentication")
 	}
 }
 
