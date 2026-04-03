@@ -205,9 +205,14 @@ curl -X POST "http://localhost:5050/search" \
 
 ### MCP (Model Context Protocol)
 
-服务在 `http://localhost:5050/mcp` 提供 HTTP MCP 端点。
+服务在 `http://localhost:5050/mcp` 提供 MCP 端点，**同时兼容 SSE 和 HTTP 两种传输模式**：
 
-默认启用无状态模式（`MCP_STATELESS=true`），可避免客户端出现 `session not found`。
+| 方法 | 模式 | 说明 |
+|------|------|------|
+| `GET` | SSE | 建立服务器推送流，适合长连接场景 |
+| `POST` | HTTP Streamable | 无状态请求/响应，适合短连接场景 |
+
+默认启用无状态模式（`MCP_STATELESS=true`），可避免客户端出现 `session not found` 错误。
 如需有状态会话，请将 `MCP_STATELESS=false`，并确保上游反向代理正确透传 `Mcp-Session-Id` 且启用会话粘性（sticky）。
 
 #### VS Code 配置示例 (配合 mcp-remote)
