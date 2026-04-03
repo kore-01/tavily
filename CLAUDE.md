@@ -2,6 +2,54 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 速查表
+
+| 操作 | 命令 |
+|------|------|
+| 启动后端 | `go run ./server` |
+| 启动前端 | `cd web && npm run dev` |
+| 运行测试 | `go test ./server/...` |
+| 运行单个测试 | `go test -v ./server/internal/services -run TestName` |
+| Windows 构建 | `.\scripts\build_all.ps1` |
+| Linux/macOS 构建 | `./scripts/build_all.sh` |
+| Docker 启动 | `docker-compose up -d` |
+| 查看 Master Key | `docker logs tavily-proxy 2>&1 \| grep "master key"` |
+
+**环境变量速查**
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `LISTEN_ADDR` | `:5050` | 服务监听地址 |
+| `DATABASE_PATH` | `./server/data/app.db` | SQLite 数据库路径 |
+| `TAVILY_BASE_URL` | `https://api.tavily.com` | 上游 API 地址 |
+| `UPSTREAM_TIMEOUT` | `150s` | 上游请求超时 |
+| `MCP_STATELESS` | `true` | MCP 无状态模式 |
+| `LOG_LEVEL` | `info` | 日志级别 |
+
+**API 调用示例**
+
+```bash
+curl -X POST "http://localhost:5050/search" \
+  -H "Authorization: Bearer <MASTER_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "AI 技术", "search_depth": "basic"}'
+```
+
+**MCP 配置示例 (VS Code)**
+
+```json
+{
+  "servers": {
+    "tavily-proxy": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "http://localhost:5050/mcp", "--header", "Authorization: Bearer <MASTER_KEY>"]
+    }
+  }
+}
+```
+
+---
+
 ## Project Overview
 
 TavilyProxy 是一个透明的 Tavily API 反向代理服务，将多个 Tavily API Key 汇聚在单一 Master Key 之后，并提供内置 Web UI 用于管理 Key、用量统计和请求日志。
